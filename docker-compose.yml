@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  gateway:
+    image: us-docker.pkg.dev/genuine-polymer-165712/codecov/enterprise-gateway:latest
+    environment:
+      CODECOV_API_HOST: api.codecov.io
+      CODECOV_API_PORT: 443
+      CODECOV_API_SCHEME: https
+      #CODECOV_API_HOST_HEADER: api.codecov.io
+      CODECOV_RTI_HOST: api.codecov.io
+      CODECOV_RTI_PORT: 443
+      CODECOV_RTI_SCHEME: https
+      CODECOV_RTI_HOST_HEADER: api.codecov.io
+      CODECOV_WEB_HOST: qa.codecov.dev
+      CODECOV_WEB_PORT: 443
+      CODECOV_WEB_SCHEME: https
+      CODECOV_WEB_HOST_HEADER: qa.codecov.dev
+    ports:
+      - "8080:8080"
