@@ -26,7 +26,7 @@ build.local:
 	DOCKER_BUILDKIT=1 docker build . -t ${image}:latest --build-arg COMMIT_SHA="${sha}" --build-arg VERSION="${release_version}"
 
 build:
-	docker build . -t ${image}:${release_version}-${sha} \
+	DOCKER_BUILDKIT=1 docker build . -t ${image}:${release_version}-${sha} \
 		--label "org.label-schema.build-date"="$(build_date)" \
 		--label "org.label-schema.name"="Self-Hosted API Private" \
 		--label "org.label-schema.vendor"="Codecov" \
