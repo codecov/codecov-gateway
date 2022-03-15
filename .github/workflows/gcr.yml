@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: 'Enable experimental docker'
         run: |
-          sudo bash -c 'echo "{\"experimental\": true}" >> /etc/docker/daemon.json'
+          sudo bash -c 'echo "{\"experimental\": true, \"cgroup-parent\": \"/actions_job\"}" > /etc/docker/daemon.json'
           sudo systemctl restart docker
 
       - name: Checkout
