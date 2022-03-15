@@ -40,6 +40,7 @@ jobs:
       # Build the Docker image
       - name: Build
         run: |-
+          cat /etc/docker/daemon.json
           make build
       # Push the Docker image to Google Artifact Registry
       - name: Publish
