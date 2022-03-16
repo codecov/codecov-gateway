@@ -1,3 +1,5 @@
+name: Tag Release on Merge
+
 on:
   pull_request:
     branches:
