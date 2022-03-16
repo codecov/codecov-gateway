@@ -30,8 +30,8 @@ jobs:
         uses: 'google-github-actions/auth@v0.6.0'
         with:
           token_format: 'access_token'
-          workload_identity_provider: 'projects/582817289294/locations/global/workloadIdentityPools/codecov-production/providers/codecov-production'
-          service_account: 'codecov-prod-gh@genuine-polymer-165712.iam.gserviceaccount.com'
+          workload_identity_provider: ${{ secrets.CODECOV_GCP_WIDP }}
+          service_account: ${{ secrets.CODECOV_GCP_WIDSA }}
 
       - name: Docker configuration
         run: |-
