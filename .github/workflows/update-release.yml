@@ -1,11 +1,7 @@
 name: Update Release PR
 
 on:
-  workflow_dispatch:
-    inputs:
-      versionName:
-        description: 'Name of version  (ie v5.0.0)'
-        required: true
+  workflow_dispatch: {}
 
 jobs:
   push_to_registry:
