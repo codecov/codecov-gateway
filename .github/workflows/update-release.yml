@@ -1,17 +1,13 @@
 name: Update Release PR
 
 on:
-  workflow_dispatch:
-    inputs:
-      versionName:
-        description: 'Name of version  (ie v5.0.0)'
-        required: true
+  workflow_dispatch: {}
 
 jobs:
   push_to_registry:
-    name: Create PR for Release ${{ github.event.inputs.versionName }}
+    name: Update PR for Release
     runs-on: ubuntu-latest
-    if: ${{ startsWith(github.head_ref, 'release/') }}
+    if: ${{ startsWith(${GITHUB_REF#refs/heads/}, 'release/') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -19,21 +15,25 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email noreply@github.com
+      - name: Extract version
+        shell: bash
+        run: echo "##[set-output name=version;]$(echo ${GITHUB_REF#refs/heads/release/})"
+        id: extract-version
       - name: Update version file
         id: make-commit
         run: |
-          git commit --allow-empty --message "Prepare release ${{ github.event.inputs.versionName }}"
+          git commit --allow-empty --message "Prepare release ${{ steps.extract-version.outputs.version }}"
           echo "::set-output name=commit::$(git rev-parse HEAD)"
       - name: Push release branch
-        run: git push origin release/${{ github.event.inputs.versionName }}
+        run: git push origin release/${{ steps.extract-version.outputs.version }}
       - name: Create pull request into main
         uses: thomaseizinger/create-pull-request@1.2.2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          head: release/${{ github.event.inputs.versionName }}
+          head: release/${{ steps.extract-version.outputs.version }}
           base: main
-          title: Update Release ${{ github.event.inputs.versionName }}
+          title: Update Release ${{ steps.extract-version.outputs.version }}
           reviewers: ${{ github.event.issue.user.login }}
           body: |
-            Update Release PR for ${{ github.event.inputs.versionName }}
+            Update Release PR for ${{ steps.extract-version.outputs.version }}
             I've updated the version name and committed: ${{ steps.make-commit.outputs.commit }}.
