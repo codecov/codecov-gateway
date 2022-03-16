@@ -1,18 +1,27 @@
 name: Release Dockerhub image
 
 on:
-  push:
-    tags:
-      - v*
+  pull_request:
+    branches:
+      - main
+    types: [closed]
 
 jobs:
   push_to_registry:
-    name: Push Docker image to Docker Hub
+    name: Tag Release ${{ github.head_ref }} and Push Docker image to Docker Hub
+    if: ${{ github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/') }}
     runs-on: ubuntu-latest
     environment: enterprise
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Initialize mandatory git config
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email noreply@github.com
+      - name: Tag Release
+        run: |-
+          make tag.release
       # Configure Workload Identity Federation and generate an access token.
       - id: 'auth'
         name: 'Authenticate to Google Cloud'

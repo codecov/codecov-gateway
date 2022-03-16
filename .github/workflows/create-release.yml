@@ -9,7 +9,7 @@ on:
 
 jobs:
   push_to_registry:
-    name: Create PR for Release
+    name: Create PR for Release ${{ github.event.inputs.versionName }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
