@@ -23,7 +23,7 @@ jobs:
       - name: Update version file
         id: make-commit
         run: |
-          echo "${{ github.event.inputs.versionName }}" > VERSION
+          echo -n $(tr -d '\n' < VERSION) > VERSION
           git add VERSION
           git commit --allow-empty --message "Prepare release ${{ github.event.inputs.versionName }}"
           echo "::set-output name=commit::$(git rev-parse HEAD)"
