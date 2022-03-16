@@ -57,4 +57,16 @@ jobs:
       # Push the Docker image from Google Artifact Registry to Dockerhub
       - name: Publish
         run: |-
+          COUNTER=0
+          sleep 5
+          while [ true ]; do
+            make pull-for-release
+            COUNTER=$(($COUNTER+1))
+            if [ "$COUNTER" -gt 10 ]; then
+              echo "Timeout trying to download release image"
+              exit 1
+            fi
+            echo Attempt $COUNTER
+            sleep 3
+          done
           make release
