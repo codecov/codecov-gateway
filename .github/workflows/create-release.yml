@@ -9,7 +9,7 @@ on:
 
 jobs:
   push_to_registry:
-    name: Push Docker image to Docker Hub
+    name: Create PR for Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,16 +23,16 @@ jobs:
       - name: Update version file
         id: make-commit
         run: |
-          echo "${{ github.event.inputs.versionName }}" >> VERSION
+          echo "${{ github.event.inputs.versionName }}" > VERSION
           git add VERSION
-          git commit --message "Prepare release ${{ github.event.inputs.versionName }}"
+          git commit --allow-empty --message "Prepare release ${{ github.event.inputs.versionName }}"
           echo "::set-output name=commit::$(git rev-parse HEAD)"
       - name: Push release branch
         run: git push origin release/${{ github.event.inputs.versionName }}
       - name: Create pull request into main
         uses: thomaseizinger/create-pull-request@1.0.0
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           head: release/${{ github.event.inputs.versionName }}
           base: main
           title: ${{ github.event.inputs.versionName }} into main

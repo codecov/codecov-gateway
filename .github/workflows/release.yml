@@ -1,4 +1,4 @@
-name: Relase Dockerhub image
+name: Release Dockerhub image
 
 on:
   push:
