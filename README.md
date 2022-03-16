@@ -1,6 +1,8 @@
 # codecov-gateway
 Gateway for self hosted. The brains!
 
+[![Build and Push to GCP Artifact Registry](https://github.com/codecov/codecov-gateway/actions/workflows/gcr.yml/badge.svg)](https://github.com/codecov/codecov-gateway/actions/workflows/gcr.yml)
+[![Publish Docker image](https://github.com/codecov/codecov-gateway/actions/workflows/release.yml/badge.svg)](https://github.com/codecov/codecov-gateway/actions/workflows/release.yml)
 
 ### Purpose
 Control routing to various Codecov services. This is meant to be functionally equivalent to ambassador/emissary which we use in production. The primary purpose is to allow independent scaling of various services based on traffic levels.
