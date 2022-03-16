@@ -7,10 +7,16 @@ jobs:
   push_to_registry:
     name: Update PR for Release
     runs-on: ubuntu-latest
-    if: ${{ startsWith(${GITHUB_REF#refs/heads/}, 'release/') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Check branch
+        run: |
+          echo ${GITHUB_REF#refs/heads/} | grep release
+          if [ $? -ne 0 ]; then
+            echo "Invalid branch chosen"
+            exit 1;
+          fi
       - name: Initialize mandatory git config
         run: |
           git config user.name "GitHub Actions"
