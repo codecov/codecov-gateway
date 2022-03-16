@@ -3,6 +3,7 @@ Gateway for self hosted. The brains!
 
 
 ### Purpose
+Control routing to various Codecov services. This is meant to be functionally equivalent to ambassador/emissary which we use in production. The primary purpose is to allow independent scaling of various services based on traffic levels.
 
 ### Configuration
 End user configuration via environment variables was a goal while creating this. As such there are a number of vars that can be set to impact performance.
