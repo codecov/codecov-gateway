@@ -5,7 +5,7 @@ on:
 
 jobs:
   push_to_registry:
-    name: Create PR for Release ${{ github.event.inputs.versionName }}
+    name: Update PR for Release
     runs-on: ubuntu-latest
     if: ${{ startsWith(${GITHUB_REF#refs/heads/}, 'release/') }}
     steps:
