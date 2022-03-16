@@ -1,16 +1,16 @@
-name: Tag Release on Merge
+name: Tag Release on Merge of Release Branch
 
 on:
   pull_request:
     branches:
-      - release/*
+      - main
     types: [closed]
 
 jobs:
   tag:
-    name: Tag Release branch for deploy
+    name: Tag Release for deploy
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    if: ${{ github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
