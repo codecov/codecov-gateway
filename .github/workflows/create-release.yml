@@ -1,0 +1,37 @@
+name: Create Release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      versionName:
+        description: 'Name of version  (ie v5.0.0)'
+        required: true
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    environment: enterprise
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Update version file
+        id: make-commit
+        run: |
+          echo "${{ github.event.inputs.versionName }}" >> VERSION
+          git add VERSION
+          git commit --message "Prepare release ${{ github.event.inputs.versionName }}"
+          echo "::set-output name=commit::$(git rev-parse HEAD)"
+      - name: Push release branch
+        run: git push origin release/${{ github.event.inputs.versionName }}
+      - name: Create pull request into main
+        uses: thomaseizinger/create-pull-request@1.0.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          head: release/${{ github.event.inputs.versionName }}
+          base: main
+          title: ${{ github.event.inputs.versionName }} into main
+          reviewers: ${{ github.event.issue.user.login }}
+          body: |
+            Release PR for ${{ github.event.inputs.versionName }}
+            I've updated the version name and committed: ${{ steps.make-commit.outputs.commit }}.
