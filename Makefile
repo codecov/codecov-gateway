@@ -39,8 +39,10 @@ build:
 push:
 	docker push ${image}:${release_version}-${sha}
 
-release:
+pull-for-release:
 	docker pull ${image}:${release_version}-${sha}
+
+release:
 	docker tag ${image}:${release_version}-${sha} ${dockerhub_image}:${release_version}
 	docker tag ${image}:${release_version}-${sha} ${dockerhub_image}:latest-stable
 	docker push ${dockerhub_image}:${release_version}
