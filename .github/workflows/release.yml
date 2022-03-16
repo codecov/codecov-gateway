@@ -1,26 +1,14 @@
-name: Build and Push to GCP Artifact Registry
+name: Publish Docker image
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
 
 jobs:
-  setup-build-publish:
-    name: Setup, Build, Publish
+  push_to_registry:
+    name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    environment: production
-
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
     steps:
-      - name: 'Enable experimental docker'
-        run: |
-          sudo bash -c 'echo "{\"experimental\": true, \"cgroup-parent\": \"/actions_job\"}" > /etc/docker/daemon.json'
-          sudo systemctl restart docker
-
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -37,11 +25,13 @@ jobs:
         run: |-
           echo ${{steps.auth.outputs.access_token}} | docker login -u oauth2accesstoken --password-stdin https://us-docker.pkg.dev
 
-      # Build the Docker image
-      - name: Build
-        run: |-
-          make build
-      # Push the Docker image to Google Artifact Registry
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1.14.1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Push the Docker image from Google Artifact Registry to Dockerhub
       - name: Publish
         run: |-
-          make push
+          make release
