@@ -58,8 +58,8 @@ jobs:
         run: |-
           COUNTER=0
           sleep 5
-          while [ true ]; do
-            make pull-for-release || true
+          while [ $COUNTER -ne 11 ]; do
+            make pull-for-release && break || true
             COUNTER=$(($COUNTER+1))
             if [ "$COUNTER" -gt 10 ]; then
               echo "Timeout trying to download release image"
