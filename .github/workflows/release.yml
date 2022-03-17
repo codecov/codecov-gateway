@@ -58,7 +58,7 @@ jobs:
         run: |-
           COUNTER=0
           sleep 5
-          while [ $COUNTER -ne 11 ]; do
+          while [ true ]; do
             make pull-for-release && break || true
             COUNTER=$(($COUNTER+1))
             if [ "$COUNTER" -gt 10 ]; then
