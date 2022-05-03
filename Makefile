@@ -28,7 +28,7 @@ build.local:
 build:
 	DOCKER_BUILDKIT=1 docker build . -t ${image}:${release_version}-${sha} \
 		--label "org.label-schema.build-date"="$(build_date)" \
-		--label "org.label-schema.name"="Self-Hosted API Private" \
+		--label "org.label-schema.name"="Self-Hosted Gateway" \
 		--label "org.label-schema.vendor"="Codecov" \
 		--label "org.label-schema.version"="${release_version}-${sha}" \
 		--label "org.vcs-branch"="$(branch)" \
@@ -49,3 +49,9 @@ release:
 	docker tag ${image}:${release_version}-${sha} ${dockerhub_image}:latest-stable
 	docker push ${dockerhub_image}:${release_version}
 	docker push ${dockerhub_image}:latest-stable
+
+dive:
+	CI=true dive ${image}:${release_version}-${sha} --lowestEfficiency=0.97 --highestUserWastedPercent=0.06
+
+deep-dive:
+	deep-dive --config .deep-dive.yaml ${image}:${release_version}-${sha}
