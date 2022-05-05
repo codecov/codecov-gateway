@@ -1,0 +1,4 @@
+search:
+  files:
+    python: '.*\.pyc?'
+    json:  '.*\.json'

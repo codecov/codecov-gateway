@@ -41,6 +41,15 @@ jobs:
       - name: Build
         run: |-
           make build
+
+      - name: Dive
+        run: |-
+          make dive
+
+      - name: Deep Dive
+        run: |-
+          make deep-dive
+
       # Push the Docker image to Google Artifact Registry
       - name: Publish
         run: |-
