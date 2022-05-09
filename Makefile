@@ -38,8 +38,8 @@ build:
 
 push:
 	docker push ${image}:${release_version}-${sha}
-	docker tag ${image}:${release_version}-${sha} ${image}:latest
-	docker push ${image}:latest
+	docker tag ${image}:${release_version}-${sha} ${image}:${release_version}-latest
+	docker push ${image}:${release_version}-latest
 
 pull-for-release:
 	docker pull ${image}:${release_version}-${sha}
