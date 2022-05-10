@@ -61,4 +61,4 @@ dive:
 
 deep-dive:
 	$(MAKE) pull.devops
-	docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v "$(shell pwd)":/tmp ${devops_image} /usr/bin/deep-dive -v --config /tmp/.deep-dive.yaml ${image}:${release_version}-${sha}
+	docker run -v /var/run/docker.sock:/var/run/docker.sock -v "$(shell pwd)":/tmp ${devops_image} /usr/bin/deep-dive -v --config /tmp/.deep-dive.yaml ${image}:${release_version}-${sha}
