@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.3
-FROM alpine:3.15
+FROM alpine:3.16
 
 RUN addgroup -S application && adduser -S codecov -G application
 RUN apk update --no-cache && apk upgrade --no-cache python3 openssl && apk add --no-cache nginx supervisor gettext
