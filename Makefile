@@ -26,6 +26,7 @@ gcr.auth:
 
 build.local:
 	docker build . -t ${image}:${release_version}-latest --build-arg COMMIT_SHA="${sha}" --build-arg VERSION="${release_version}"
+	docker tag ${image}:${release_version}-latest ${image}:latest
 
 build:
 	docker build . -t ${image}:${release_version}-${sha} \
