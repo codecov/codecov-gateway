@@ -2,6 +2,7 @@
 ^/validate(\/)?$  be_api
 ^/internal(\/.*)?$  be_api
 ^/graphql(\/.*)?$  be_api
+^/webhooks(\/.*)?$  be_api
 ^/frontend_health$  be_frontend
 ^/gateway_health$  be_gateway
 ^/upload/v2(\/)?$  be_api

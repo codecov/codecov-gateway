@@ -20,14 +20,16 @@ CODECOV_RTI_HOST=rti
 CODECOV_RTI_PORT=8000
 CODECOV_RTI_SCHEME=http
 CODECOV_RTI_HOST_HEADER="\$http_host"
-CODECOV_WEB_HOST=web
-CODECOV_WEB_PORT=5000
-CODECOV_WEB_SCHEME=http
-CODECOV_WEB_HOST_HEADER="\$http_host"
+CODECOV_FRONTEND_HOST=frontend
+CODECOV_FRONTEND_PORT=5000
+CODECOV_FRONTEND_SCHEME=http
+CODECOV_FRONTEND_HOST_HEADER="\$http_host"
+CODECOV_MINIO_HOST=minio
+CODECOV_MINIO_PORT=9000
+CODECOV_MINIO_SCHEME=http
+CODECOV_MINIO_HOST_HEADER="%[req.hdr(Host)]"
 CODECOV_GATEWAY_HTTP_PORT=8080 # Port the gateway listens for traffic on
 CODECOV_GATEWAY_HTTPS_PORT=8443 # Port the gateway listens for ssl traffic on if enabled
-CODECOV_GATEWAY_NGINX_WORKER_PROCESSES=2 # The number of NGINX worker processes. In most cases, running one worker process per CPU core works well. There are times when you may want to increase this number, such as when the worker processes have to do a lot of disk I/O.
-CODECOV_GATEWAY_NGINX_WORKER_CONNECTIONS=1024 # The maximum number of connections that each worker process can handle simultaneously. Most systems have enough resources to support a larger number. The appropriate setting depends on the size of the server and the nature of the traffic, and can be discovered through testing. This can't be higher than `ulimit -n`.
 ```
 ### Example configuration
 ```text
@@ -41,11 +43,14 @@ CODECOV_RTI_HOST=rti
 CODECOV_RTI_PORT=8000
 CODECOV_RTI_SCHEME=http
 CODECOV_RTI_HOST_HEADER="\$http_host"
-CODECOV_WEB_HOST=qa.codecov.dev
-CODECOV_WEB_PORT=443
-CODECOV_WEB_SCHEME=https
-CODECOV_WEB_HOST_HEADER="qa.codecov.dev"
+CODECOV_FRONTEND_HOST=qa.codecov.dev
+CODECOV_FRONTEND_PORT=443
+CODECOV_FRONTEND_SCHEME=https
+CODECOV_FRONTEND_HOST_HEADER="qa.codecov.dev"
 ```
 
 ### SSL
 This is currently untested. It is not needed for the initial customer (Lyft). For a wider release, we will want to test this. It should be in a working state currently.
+
+### Minio
+This is mostly intended for when using with docker compose. It makes /export and /archive route to the minio host. To enable minio features use the env var `CODECOV_GATEWAY_MINIO_ENABLED=true`

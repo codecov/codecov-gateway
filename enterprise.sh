@@ -59,23 +59,34 @@ _start_haproxy() {
     echo 'Codecov gateway ssl enabled'
     envsubst < /etc/haproxy/3-ssl.conf.template > /etc/haproxy/2-frontends.conf
   else
-    ssl_string="ssl verify none "
-    if [ $CODECOV_FRONTEND_SCHEME = "https" ]; then
-      export CODECOV_FRONTEND_SSL_FLAG=$ssl_string
-    fi
-    if [ $CODECOV_API_SCHEME = "https" ]; then
-      export CODECOV_API_SSL_FLAG=$ssl_string
-    fi
-    if [ $CODECOV_RTI_SCHEME = "https" ]; then
-      export CODECOV_RTI_SSL_FLAG=$ssl_string
-    fi
     echo 'Codecov gateway ssl disabled'
     envsubst < /etc/haproxy/2-http.conf.template > /etc/haproxy/2-frontends.conf
   fi
+  ssl_string="ssl verify none "
+  if [ $CODECOV_FRONTEND_SCHEME = "https" ]; then
+    export CODECOV_FRONTEND_SSL_FLAG=$ssl_string
+  fi
+  if [ $CODECOV_API_SCHEME = "https" ]; then
+    export CODECOV_API_SSL_FLAG=$ssl_string
+  fi
+  if [ $CODECOV_RTI_SCHEME = "https" ]; then
+    export CODECOV_RTI_SSL_FLAG=$ssl_string
+  fi
+
 
   envsubst < /etc/haproxy/0-haproxy.conf.template > /etc/haproxy/0-haproxy.conf
   envsubst < /etc/haproxy/1-backends.conf.template > /etc/haproxy/1-backends.conf
-  haproxy -W -db -f /etc/haproxy/0-haproxy.conf -f /etc/haproxy/1-backends.conf -f /etc/haproxy/2-frontends.conf
+  MINIO_FILE=""
+  if [ "$CODECOV_GATEWAY_MINIO_ENABLED" ]; then
+      echo 'Codecov gateway minio enabled'
+      if [ $CODECOV_MINIO_SCHEME = "https" ]; then
+          export CODECOV_MINIO_SSL_FLAG=$ssl_string
+      fi
+      envsubst < /etc/haproxy/1-minio.conf.template > /etc/haproxy/1-minio.conf
+      cat /etc/haproxy/minio.map >> /etc/haproxy/routing.map
+      MINIO_FILE="-f /etc/haproxy/1-minio.conf"
+  fi
+  haproxy -W -db -f /etc/haproxy/0-haproxy.conf -f /etc/haproxy/1-backends.conf $MINIO_FILE -f /etc/haproxy/2-frontends.conf
 }
 
 if [ -z "$1" ];
