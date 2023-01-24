@@ -16,10 +16,10 @@ CODECOV_API_HOST=api  # This is the host to access the codecov api
 CODECOV_API_PORT=8000 # The port to access the codecov api
 CODECOV_API_SCHEME=http # The scheme on which to access the codecov api. http or https
 CODECOV_API_HOST_HEADER="\$http_host" # The host to send as the host header. Default passes through host. Useful to set for local envs.
-CODECOV_RTI_HOST=rti
-CODECOV_RTI_PORT=8000
-CODECOV_RTI_SCHEME=http
-CODECOV_RTI_HOST_HEADER="\$http_host"
+CODECOV_IA_HOST=IA
+CODECOV_IA_PORT=8000
+CODECOV_IA_SCHEME=http
+CODECOV_IA_HOST_HEADER="\$http_host"
 CODECOV_FRONTEND_HOST=frontend
 CODECOV_FRONTEND_PORT=5000
 CODECOV_FRONTEND_SCHEME=http
@@ -33,16 +33,16 @@ CODECOV_GATEWAY_HTTPS_PORT=8443 # Port the gateway listens for ssl traffic on if
 ```
 ### Example configuration
 ```text
-Use public codecov api, local rti and qa for web
+Use public codecov api, local IA and qa for web
 
 CODECOV_API_HOST=api.codecov.io
 CODECOV_API_PORT=443
 CODECOV_API_SCHEME=https 
 CODECOV_API_HOST_HEADER=api.codecov.io
-CODECOV_RTI_HOST=rti
-CODECOV_RTI_PORT=8000
-CODECOV_RTI_SCHEME=http
-CODECOV_RTI_HOST_HEADER="\$http_host"
+CODECOV_IA_HOST=IA
+CODECOV_IA_PORT=8000
+CODECOV_IA_SCHEME=http
+CODECOV_IA_HOST_HEADER="\$http_host"
 CODECOV_FRONTEND_HOST=qa.codecov.dev
 CODECOV_FRONTEND_PORT=443
 CODECOV_FRONTEND_SCHEME=https
