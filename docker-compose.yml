@@ -8,10 +8,10 @@ services:
       CODECOV_API_PORT: 443
       CODECOV_API_SCHEME: https
       CODECOV_API_HOST_HEADER: api.codecov.io
-      CODECOV_RTI_HOST: api.codecov.io
-      CODECOV_RTI_PORT: 443
-      CODECOV_RTI_SCHEME: https
-      CODECOV_RTI_HOST_HEADER: api.codecov.io
+      CODECOV_IA_HOST: api.codecov.io
+      CODECOV_IA_PORT: 443
+      CODECOV_IA_SCHEME: https
+      CODECOV_IA_HOST_HEADER: api.codecov.io
       CODECOV_FRONTEND_HOST: qa.codecov.dev
       CODECOV_FRONTEND_PORT: 443
       CODECOV_FRONTEND_SCHEME: https

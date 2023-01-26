@@ -24,31 +24,32 @@ _preflight() {
   while [ -z "`nc -vz $CODECOV_API_HOST $CODECOV_API_PORT 2>&1 | grep open`" ]; do
 
     COUNTER=$(($COUNTER+1))
-    if [ "$COUNTER" -gt 30 ]; then
+    if [ "$COUNTER" -gt 60 ]; then
       echo "Timeout waiting for Codecov api to start"
-      echo "Check logs on api and ensure proper configuration: https://docs.codecov.io/changelog/release-notes-for-v460#infrastructure for more information"
+      echo "If this is the first boot ever, initial migrations may have taken longer than this timer. Please restart this service (gateway)"
+      echo "Check logs on api and ensure proper configuration: https://docs.codecov.io/changelog/release-notes-for-v500#infrastructure for more information"
       exit 1
-    elif [ "$COUNTER" -eq 15 ]; then
+    elif [ "$COUNTER" -eq 30 ]; then
       echo 'Still waiting for Codecov api to start ...'
     fi
     sleep 1
   done
   echo 'Codecov api started.'
   COUNTER=0
-  echo 'Waiting for Codecov rti to start ...'
-    while [ -z "`nc -vz $CODECOV_RTI_HOST $CODECOV_RTI_PORT 2>&1 | grep open`" ]; do
+  echo 'Waiting for Codecov ia to start ...'
+    while [ -z "`nc -vz $CODECOV_IA_HOST $CODECOV_IA_PORT 2>&1 | grep open`" ]; do
 
       COUNTER=$(($COUNTER+1))
       if [ "$COUNTER" -gt 30 ]; then
-        echo "Timeout waiting for Codecov rti to start"
-        echo "Check logs on rti and ensure proper configuration: https://docs.codecov.io/changelog/release-notes-for-v460#infrastructure for more information"
+        echo "Timeout waiting for Codecov IA to start"
+        echo "Check logs on IA and ensure proper configuration: https://docs.codecov.io/changelog/release-notes-for-v500#infrastructure for more information"
         exit 1
       elif [ "$COUNTER" -eq 15 ]; then
-        echo 'Still waiting for Codecov rti to start ...'
+        echo 'Still waiting for Codecov IA to start ...'
       fi
       sleep 1
     done
-  echo 'Codecov rti started.'
+  echo 'Codecov IA started.'
 
   echo 'Codecov preflight complete.'
 }
@@ -69,8 +70,8 @@ _start_haproxy() {
   if [ $CODECOV_API_SCHEME = "https" ]; then
     export CODECOV_API_SSL_FLAG=$ssl_string
   fi
-  if [ $CODECOV_RTI_SCHEME = "https" ]; then
-    export CODECOV_RTI_SSL_FLAG=$ssl_string
+  if [ $CODECOV_IA_SCHEME = "https" ]; then
+    export CODECOV_IA_SSL_FLAG=$ssl_string
   fi
 
 
