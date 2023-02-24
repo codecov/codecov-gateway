@@ -5,6 +5,7 @@ RUN apk update --no-cache && apk upgrade --no-cache openssl && apk add --no-cach
 RUN mkdir -p /etc/codecov/ssl/certs && chown haproxy:haproxy /etc/codecov/ssl/certs && chown haproxy:haproxy /etc/haproxy
 COPY --chmod=755 enterprise.sh /usr/local/bin/enterprise.sh
 COPY --chown=haproxy:haproxy --chmod=644 config/0-haproxy.conf /etc/haproxy/0-haproxy.conf.template
+COPY --chown=haproxy:haproxy --chmod=644 config/0-haproxy-no-chroot.conf /etc/haproxy/0-haproxy-no-chroot.conf.template
 COPY --chown=haproxy:haproxy --chmod=644 config/1-backends.conf /etc/haproxy/1-backends.conf.template
 COPY --chown=haproxy:haproxy --chmod=644 config/1-minio.conf /etc/haproxy/1-minio.conf.template
 COPY --chown=haproxy:haproxy --chmod=644 config/2-http.conf /etc/haproxy/2-http.conf.template
