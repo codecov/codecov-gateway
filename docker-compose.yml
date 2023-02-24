@@ -16,6 +16,7 @@ services:
       CODECOV_FRONTEND_PORT: 443
       CODECOV_FRONTEND_SCHEME: https
       CODECOV_FRONTEND_HOST_HEADER: qa.codecov.dev
+      #CODECOV_GATEWAY_CHROOT_DISABLED: true
     ports:
       - "8080:8080"
       - "8404:8404"

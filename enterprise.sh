@@ -74,8 +74,13 @@ _start_haproxy() {
     export CODECOV_IA_SSL_FLAG=$ssl_string
   fi
 
+   if [ "$CODECOV_GATEWAY_CHROOT_DISABLED" ]; then
+      echo 'Codecov gateway chroot disabled'
+      envsubst < /etc/haproxy/0-haproxy-no-chroot.conf.template > /etc/haproxy/0-haproxy.conf
+    else
+      envsubst < /etc/haproxy/0-haproxy.conf.template > /etc/haproxy/0-haproxy.conf
+    fi
 
-  envsubst < /etc/haproxy/0-haproxy.conf.template > /etc/haproxy/0-haproxy.conf
   envsubst < /etc/haproxy/1-backends.conf.template > /etc/haproxy/1-backends.conf
   MINIO_FILE=""
   if [ "$CODECOV_GATEWAY_MINIO_ENABLED" ]; then
@@ -87,6 +92,7 @@ _start_haproxy() {
       cat /etc/haproxy/minio.map >> /etc/haproxy/routing.map
       MINIO_FILE="-f /etc/haproxy/1-minio.conf"
   fi
+  echo "Starting haproxy"
   haproxy -W -db -f /etc/haproxy/0-haproxy.conf -f /etc/haproxy/1-backends.conf $MINIO_FILE -f /etc/haproxy/2-frontends.conf
 }
 
