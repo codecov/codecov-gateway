@@ -30,6 +30,7 @@ CODECOV_MINIO_SCHEME=http
 CODECOV_MINIO_HOST_HEADER="%[req.hdr(Host)]"
 CODECOV_GATEWAY_HTTP_PORT=8080 # Port the gateway listens for traffic on
 CODECOV_GATEWAY_HTTPS_PORT=8443 # Port the gateway listens for ssl traffic on if enabled
+CODECOV_GATEWAY_CHROOT_DISABLED=null # Default is null. When var is present, chroot will be disabled for haproxy. Workaround for Reddit.
 ```
 ### Example configuration
 ```text
