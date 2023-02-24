@@ -28,7 +28,7 @@ jobs:
           echo "::set-output name=short_sha::$(git rev-parse --short=7 HEAD)"
           echo "::set-output name=release_version::$(cat VERSION)"
       - name: Create GH Release
-        uses: softprops/action-gh-release@v0.1.14
+        uses: softprops/action-gh-release@v0.1.15
         with:
           token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
           name: Release ${{ steps.get-release-vars.outputs.release_version }} - ${{ steps.get-release-vars.outputs.short_sha }}
