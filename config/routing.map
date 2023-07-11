@@ -7,7 +7,7 @@
 ^/gateway_health$  be_gateway
 ^/upload/v2(\/)?$  be_api
 ^/upload/v4(\/)?$  be_api
-^/upload/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise)(\/)?$  be_api
+^/upload/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise)(\/.*)?$  be_api
 ^/profiling(\/.*)?$  be_ia
 ^/(.*)/(.*)/(.*)/branch/(?P<branch>.+)/(graph|graphs)/badge.svg be_api
 ^/.*/.*/.*/(graph|graphs)/badge.svg be_api
