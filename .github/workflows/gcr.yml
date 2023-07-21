@@ -61,6 +61,6 @@ jobs:
           username: ${{ secrets.CODECOV_DEVOPS_DOCKER_USERNAME }}
           password: ${{ secrets.CODECOV_DEVOPS_DOCKER_PASSWORD }}
 
-      - name: Publish
+      - name: Publish Rolling
         run: |-
           make push.rolling
