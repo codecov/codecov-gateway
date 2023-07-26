@@ -3,7 +3,7 @@ release_version = `cat VERSION`
 build_date ?= $(shell git show -s --date=iso8601-strict --pretty=format:%cd $$sha)
 branch = $(shell git branch | grep \* | cut -f2 -d' ')
 epoch := $(shell date +"%s")
-dockerhub_image := codecov/enterprise-gateway
+dockerhub_image := codecov/self-hosted-gateway
 IMAGE := ${CODECOV_GATEWAY_IMAGE}
 DEVOPS_IMAGE := ${CODECOV_DEVOPS_IMAGE}
 export DOCKER_BUILDKIT := 1
@@ -30,7 +30,7 @@ build.local:
 	docker tag ${IMAGE}:${release_version}-latest ${IMAGE}:latest-stable
 
 build:
-	docker build . -t ${IMAGE}:${release_version}-${sha} \
+	docker build . -t ${IMAGE}:${release_version}-${sha} -t ${IMAGE}:${release_version}-latest -t ${dockerhub_image}:rolling \
 		--label "org.label-schema.build-date"="$(build_date)" \
 		--label "org.label-schema.name"="Self-Hosted Gateway" \
 		--label "org.label-schema.vendor"="Codecov" \
@@ -42,8 +42,11 @@ build:
 
 push:
 	docker push ${IMAGE}:${release_version}-${sha}
-	docker tag ${IMAGE}:${release_version}-${sha} ${IMAGE}:${release_version}-latest
 	docker push ${IMAGE}:${release_version}-latest
+
+
+push.rolling:
+	docker push ${dockerhub_image}:rolling
 
 pull-for-release:
 	docker pull ${IMAGE}:${release_version}-${sha}
@@ -54,8 +57,10 @@ pull.devops:
 release:
 	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:${release_version}
 	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:latest-stable
+	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:latest-calver
 	docker push ${dockerhub_image}:${release_version}
 	docker push ${dockerhub_image}:latest-stable
+	docker push ${dockerhub_image}:latest-calver
 
 dive:
 	$(MAKE) pull.devops
