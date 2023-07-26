@@ -6,6 +6,10 @@ on:
       - main
     types: [closed]
 
+env:
+  CODECOV_DEVOPS_IMAGE: ${{ vars.CODECOV_DEVOPS_IMAGE }}
+  CODECOV_GATEWAY_IMAGE: ${{ vars.CODECOV_GATEWAY_IMAGE }}
+  
 jobs:
   push_to_registry:
     name: Tag Release ${{ github.head_ref }} and Push Docker image to Docker Hub
