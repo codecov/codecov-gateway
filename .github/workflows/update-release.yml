@@ -33,7 +33,7 @@ jobs:
       - name: Push release branch
         run: git push origin release/${{ steps.extract-version.outputs.version }}
       - name: Create pull request into main
-        uses: thomaseizinger/create-pull-request@1.3.0
+        uses: thomaseizinger/create-pull-request@1.3.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           head: release/${{ steps.extract-version.outputs.version }}
