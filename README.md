@@ -51,7 +51,7 @@ CODECOV_FRONTEND_HOST_HEADER="qa.codecov.dev"
 ```
 
 ### SSL
-This is currently untested. It is not needed for the initial customer (Lyft). For a wider release, we will want to test this. It should be in a working state currently.
+This is currently untested. It should be in a working state currently.
 
 ### Minio
 This is mostly intended for when using with docker compose. It makes /export and /archive route to the minio host. To enable minio features use the env var `CODECOV_GATEWAY_MINIO_ENABLED=true`
