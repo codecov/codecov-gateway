@@ -20,5 +20,5 @@ jobs:
     secrets: inherit
     with:
       push_release: true
-      repo: ${{ vars.CODECOV_IMAGE_V2 || 'codecov/self-hosted-gateway' }}
+      repo: ${{ vars.CODECOV_GATEWAY_IMAGE || 'codecov/self-hosted-gateway' }}
       cache_requirements: false
