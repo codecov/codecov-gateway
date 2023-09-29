@@ -14,6 +14,7 @@ jobs:
     secrets: inherit
     with:
       repo: ${{ vars.CODECOV_IMAGE_V2 || 'codecov/self-hosted-gateway' }}
+      cache_requirements: false
 
   self-hosted:
     name: Push Self Hosted Image
@@ -23,5 +24,6 @@ jobs:
     uses: codecov/gha-workflows/.github/workflows/self-hosted.yml@v1.0.0
     with:
       push_rolling: true
+      cache_requirements: false
       repo: ${{ vars.CODECOV_IMAGE_V2 || 'codecov/self-hosted-gateway' }}
 
