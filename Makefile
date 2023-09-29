@@ -4,7 +4,7 @@ build_date ?= $(shell git show -s --date=iso8601-strict --pretty=format:%cd $$sh
 branch = $(shell git branch | grep \* | cut -f2 -d' ')
 epoch := $(shell date +"%s")
 dockerhub_image := codecov/self-hosted-gateway
-IMAGE := ${CODECOV_GATEWAY_IMAGE}
+IMAGE := ${AR_REPO}
 export DOCKER_BUILDKIT := 1
 
 shell:
