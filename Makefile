@@ -4,8 +4,7 @@ build_date ?= $(shell git show -s --date=iso8601-strict --pretty=format:%cd $$sh
 branch = $(shell git branch | grep \* | cut -f2 -d' ')
 epoch := $(shell date +"%s")
 dockerhub_image := codecov/self-hosted-gateway
-IMAGE := ${CODECOV_GATEWAY_IMAGE}
-DEVOPS_IMAGE := ${CODECOV_DEVOPS_IMAGE}
+IMAGE := ${AR_REPO}
 export DOCKER_BUILDKIT := 1
 
 shell:
@@ -29,7 +28,7 @@ build.local:
 	docker tag ${IMAGE}:${release_version}-latest ${IMAGE}:latest
 	docker tag ${IMAGE}:${release_version}-latest ${IMAGE}:latest-stable
 
-build:
+build.self-hosted:
 	docker build . -t ${IMAGE}:${release_version}-${sha} -t ${IMAGE}:${release_version}-latest -t ${dockerhub_image}:rolling \
 		--label "org.label-schema.build-date"="$(build_date)" \
 		--label "org.label-schema.name"="Self-Hosted Gateway" \
@@ -37,35 +36,26 @@ build:
 		--label "org.label-schema.version"="${release_version}-${sha}" \
 		--label "org.vcs-branch"="$(branch)" \
 		--build-arg COMMIT_SHA="${sha}" \
-		--build-arg VERSION="${release_version}" \
-		--squash
+		--build-arg VERSION="${release_version}"
 
-push:
-	docker push ${IMAGE}:${release_version}-${sha}
-	docker push ${IMAGE}:${release_version}-latest
+tag.self-hosted-rolling:
+	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:rolling
 
+save.self-hosted:
+	docker save -o self-hosted.tar ${IMAGE}:${release_version}-${sha}
 
-push.rolling:
+load.self-hosted:
+	docker load --input self-hosted.tar
+
+push.self-hosted-rolling:
 	docker push ${dockerhub_image}:rolling
 
-pull-for-release:
-	docker pull ${IMAGE}:${release_version}-${sha}
-
-pull.devops:
-	docker pull ${DEVOPS_IMAGE}
-
-release:
+tag.self-hosted-release:
 	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:${release_version}
 	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:latest-stable
 	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:latest-calver
+
+push.self-hosted-release:
 	docker push ${dockerhub_image}:${release_version}
 	docker push ${dockerhub_image}:latest-stable
 	docker push ${dockerhub_image}:latest-calver
-
-dive:
-	$(MAKE) pull.devops
-	docker run -e CI=true  -v /var/run/docker.sock:/var/run/docker.sock ${DEVOPS_IMAGE} dive ${IMAGE}:${release_version}-${sha} --lowestEfficiency=0.97 --highestUserWastedPercent=0.06
-
-deep-dive:
-	$(MAKE) pull.devops
-	docker run -v /var/run/docker.sock:/var/run/docker.sock -v "$(shell pwd)":/tmp ${DEVOPS_IMAGE} /usr/bin/deep-dive -v --config /tmp/.deep-dive.yaml ${IMAGE}:${release_version}-${sha}
