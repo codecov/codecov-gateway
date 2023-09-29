@@ -42,7 +42,7 @@ tag.self-hosted-rolling:
 	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:rolling
 
 save.self-hosted:
-	docker save -o self-hosted.tar ${release_version}-${sha}
+	docker save -o self-hosted.tar ${IMAGE}:${release_version}-${sha}
 
 load.self-hosted:
 	docker load --input self-hosted.tar
