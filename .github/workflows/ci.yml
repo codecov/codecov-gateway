@@ -10,7 +10,6 @@ on:
 jobs:
   build-self-hosted:
     name: Build Self Hosted Image
-    needs: [ build, test ]
     uses: codecov/gha-workflows/.github/workflows/self-hosted.yml@v1.0.0
     secrets: inherit
     with:
