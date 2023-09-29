@@ -1,0 +1,28 @@
+name: Gateway CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+
+jobs:
+  build-self-hosted:
+    name: Build Self Hosted Image
+    needs: [ build, test ]
+    uses: codecov/gha-workflows/.github/workflows/self-hosted.yml@v1.0.0
+    secrets: inherit
+    with:
+      repo: ${{ vars.CODECOV_IMAGE_V2 || 'codecov/self-hosted-gateway' }}
+
+  self-hosted:
+    name: Push Self Hosted Image
+    needs: [ build-self-hosted, test ]
+    secrets: inherit
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/production') && github.repository_owner == 'codecov' }}
+    uses: codecov/gha-workflows/.github/workflows/self-hosted.yml@v1.0.0
+    with:
+      push_rolling: true
+      repo: ${{ vars.CODECOV_IMAGE_V2 || 'codecov/self-hosted-gateway' }}
+
