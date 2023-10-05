@@ -36,7 +36,19 @@ build.self-hosted:
 		--label "org.label-schema.version"="${release_version}-${sha}" \
 		--label "org.vcs-branch"="$(branch)" \
 		--build-arg COMMIT_SHA="${sha}" \
-		--build-arg VERSION="${release_version}"
+		--build-arg VERSION="${release_version}" \
+    	--build-arg BUILD_ENV=self-hosted
+
+build.onprem:
+	docker build . -t ${IMAGE}:onprem-${release_version}-${sha} -t ${IMAGE}:onprem-${release_version}-latest -t ${dockerhub_image}:onprem-rolling \
+		--label "org.label-schema.build-date"="$(build_date)" \
+		--label "org.label-schema.name"="Self-Hosted Gateway" \
+		--label "org.label-schema.vendor"="Codecov" \
+		--label "org.label-schema.vendor"="onprem" \
+		--label "org.label-schema.version"="${release_version}-${sha}" \
+		--label "org.vcs-branch"="$(branch)" \
+		--build-arg COMMIT_SHA="${sha}" \
+		--build-arg BUILD_ENV=onprem
 
 tag.self-hosted-rolling:
 	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:rolling

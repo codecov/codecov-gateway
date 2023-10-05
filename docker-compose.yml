@@ -2,7 +2,7 @@ version: "3"
 
 services:
   gateway:
-    image: us-docker.pkg.dev/genuine-polymer-165712/codecov/enterprise-gateway
+    image: us-docker.pkg.dev/genuine-polymer-165712/codecov/enterprise-gateway:latest
     environment:
       CODECOV_API_HOST: api.codecov.io
       CODECOV_API_PORT: 443
