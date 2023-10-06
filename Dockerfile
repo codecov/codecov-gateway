@@ -5,13 +5,13 @@ RUN apk update --no-cache && apk upgrade --no-cache openssl && apk add --no-cach
 RUN mkdir -p /etc/codecov/ssl/certs && chown haproxy:haproxy /etc/codecov/ssl/certs && chown haproxy:haproxy /etc/haproxy
 COPY --chown=haproxy:haproxy --chmod=644 config/0-haproxy.conf /etc/haproxy/0-haproxy.conf.template
 COPY --chown=haproxy:haproxy --chmod=644 config/0-haproxy-no-chroot.conf /etc/haproxy/0-haproxy-no-chroot.conf.template
-COPY --chown=haproxy:haproxy --chmod=644 config/2-http.conf /etc/haproxy/2-http.conf.template
-COPY --chown=haproxy:haproxy --chmod=644 config/3-ssl.conf /etc/haproxy/3-ssl.conf.template
 
 FROM base as self-hosted
 COPY --chmod=755 enterprise.sh /usr/local/bin/enterprise.sh
+COPY --chown=haproxy:haproxy --chmod=644 config/3-ssl.conf /etc/haproxy/3-ssl.conf.template
 COPY --chown=haproxy:haproxy --chmod=644 config/1-backends.conf /etc/haproxy/1-backends.conf.template
 COPY --chown=haproxy:haproxy --chmod=644 config/1-minio.conf /etc/haproxy/1-minio.conf.template
+COPY --chown=haproxy:haproxy --chmod=644 config/2-http.conf /etc/haproxy/2-http.conf.template
 COPY --chown=haproxy:haproxy --chmod=644 config/routing.map /etc/haproxy/routing.map
 COPY --chown=haproxy:haproxy --chmod=644 config/minio.map /etc/haproxy/minio.map
 ENV CODECOV_API_HOST=api
@@ -43,6 +43,8 @@ ENTRYPOINT ["/usr/local/bin/enterprise.sh"]
 FROM base as onprem
 COPY --chmod=755 onprem.sh /usr/local/bin/onprem.sh
 COPY --chown=haproxy:haproxy --chmod=644 config/onprem.conf /etc/haproxy/onprem.conf.template
+COPY --chown=haproxy:haproxy --chmod=644 config/onprem-ssl.conf /etc/haproxy/onprem-ssl.conf.template
+COPY --chown=haproxy:haproxy --chmod=644 config/onprem-http.conf /etc/haproxy/onprem-http.conf.template
 COPY --chown=haproxy:haproxy --chmod=644 config/onprem.map /etc/haproxy/routing.map
 ENV CODECOV_ONPREM_HOST_HEADER="%[req.hdr(Host)]"
 ENV CODECOV_ONPREM_HOST=onprem_host
