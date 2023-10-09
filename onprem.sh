@@ -9,10 +9,10 @@ _start_haproxy() {
     echo 'Codecov gateway ssl disabled'
     envsubst < /etc/haproxy/onprem-http.conf.template > /etc/haproxy/2-frontends.conf
   fi
-  ssl_string="ssl verify none "
-  if [ $CODECOV_ONPREM_SCHEME = "https" ]; then
-    export CODECOV_FRONTEND_SSL_FLAG=$ssl_string
-  fi
+ # ssl_string="ssl verify none "
+  #if [ $CODECOV_ONPREM_SCHEME = "https" ]; then
+  #  export CODECOV_FRONTEND_SSL_FLAG=$ssl_string
+  #fi
    if [ "$CODECOV_GATEWAY_CHROOT_DISABLED" ]; then
       echo 'Codecov gateway chroot disabled'
       envsubst < /etc/haproxy/0-haproxy-no-chroot.conf.template > /etc/haproxy/0-haproxy.conf
