@@ -3,7 +3,7 @@
 ^/internal(\/.*)?$  be_api
 ^/graphql(\/.*)?$  be_api
 ^/webhooks(\/.*)?$  be_api
-^/frontend_health$  be_frontend
+^/frontend_health$  be_default
 ^/gateway_health$  be_gateway
 ^/api_health(\/)?$  be_api
 ^/upload/v2(\/)?$  be_api

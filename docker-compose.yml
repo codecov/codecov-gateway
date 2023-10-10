@@ -2,7 +2,7 @@ version: "3"
 
 services:
   gateway:
-    image: us-docker.pkg.dev/genuine-polymer-165712/codecov/enterprise-gateway
+    image: ${GATEWAY_DOCKER_REPO}:${GATEWAY_DOCKER_VERSION}
     environment:
       CODECOV_API_HOST: api.codecov.io
       CODECOV_API_PORT: 443
@@ -12,11 +12,16 @@ services:
       CODECOV_IA_PORT: 443
       CODECOV_IA_SCHEME: https
       CODECOV_IA_HOST_HEADER: api.codecov.io
-      CODECOV_FRONTEND_HOST: qa.codecov.dev
-      CODECOV_FRONTEND_PORT: 443
-      CODECOV_FRONTEND_SCHEME: https
-      CODECOV_FRONTEND_HOST_HEADER: qa.codecov.dev
+      CODECOV_DEFAULT_HOST: qa.codecov.dev
+      CODECOV_DEFAULT_PORT: 443
+      CODECOV_DEFAULT_SCHEME: https
+      CODECOV_DEFAULT_HOST_HEADER: qa.codecov.dev
+      #CODECOV_GATEWAY_PROXY_MODE_ENABLED: true
       #CODECOV_GATEWAY_CHROOT_DISABLED: true
+      #CODECOV_GATEWAY_SSL_ENABLED: true
     ports:
       - "8080:8080"
       - "8404:8404"
+      #- "8443:8443"
+#    volumes:
+#      - /path/to/cert/cert.crt:/etc/codecov/ssl/certs/cert.crt

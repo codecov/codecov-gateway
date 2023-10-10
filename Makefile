@@ -3,33 +3,26 @@ release_version = `cat VERSION`
 build_date ?= $(shell git show -s --date=iso8601-strict --pretty=format:%cd $$sha)
 branch = $(shell git branch | grep \* | cut -f2 -d' ')
 epoch := $(shell date +"%s")
-dockerhub_image := codecov/self-hosted-gateway
-IMAGE := ${AR_REPO}
-export DOCKER_BUILDKIT := 1
+AR_REPO ?= codecov/gateway
+DOCKERHUB_REPO ?= codecov/self-hosted-gateway
+VERSION := ${release_version}-${sha}
+export DOCKER_BUILDKIT=1
+
 
 shell:
-	docker-compose exec gateway sh
+	GATEWAY_DOCKER_REPO=${AR_REPO} GATEWAY_DOCKER_VERSION=${VERSION} docker-compose exec gateway sh
 up:
-	docker-compose up -d
+	GATEWAY_DOCKER_REPO=${AR_REPO} GATEWAY_DOCKER_VERSION=${VERSION} docker-compose up -d
 
 refresh:
-	$(MAKE) build.local
+	$(MAKE) build
 	$(MAKE) up
 
-bootstrap:
-	$(MAKE) gcr.auth
-	$(MAKE) build.local
-
-gcr.auth:
-	gcloud auth configure-docker us-docker.pkg.dev
-
-build.local:
-	docker build . -t ${IMAGE}:${release_version}-latest --build-arg COMMIT_SHA="${sha}" --build-arg VERSION="${release_version}"
-	docker tag ${IMAGE}:${release_version}-latest ${IMAGE}:latest
-	docker tag ${IMAGE}:${release_version}-latest ${IMAGE}:latest-stable
+build:
+	make build.self-hosted
 
 build.self-hosted:
-	docker build . -t ${IMAGE}:${release_version}-${sha} -t ${IMAGE}:${release_version}-latest -t ${dockerhub_image}:rolling \
+	docker build . -t ${AR_REPO}:${VERSION} -t ${AR_REPO}:${release_version}-latest -t ${DOCKERHUB_REPO}:rolling \
 		--label "org.label-schema.build-date"="$(build_date)" \
 		--label "org.label-schema.name"="Self-Hosted Gateway" \
 		--label "org.label-schema.vendor"="Codecov" \
@@ -38,24 +31,25 @@ build.self-hosted:
 		--build-arg COMMIT_SHA="${sha}" \
 		--build-arg VERSION="${release_version}"
 
+
 tag.self-hosted-rolling:
-	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:rolling
+	docker tag ${AR_REPO}:${VERSION} ${DOCKERHUB_REPO}:rolling
 
 save.self-hosted:
-	docker save -o self-hosted.tar ${IMAGE}:${release_version}-${sha}
+	docker save -o self-hosted.tar ${AR_REPO}:${VERSION}
 
 load.self-hosted:
 	docker load --input self-hosted.tar
 
 push.self-hosted-rolling:
-	docker push ${dockerhub_image}:rolling
+	docker push ${DOCKERHUB_REPO}:rolling
 
 tag.self-hosted-release:
-	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:${release_version}
-	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:latest-stable
-	docker tag ${IMAGE}:${release_version}-${sha} ${dockerhub_image}:latest-calver
+	docker tag ${AR_REPO}:${VERSION} ${DOCKERHUB_REPO}:${release_version}
+	docker tag ${AR_REPO}:${VERSION} ${DOCKERHUB_REPO}:latest-stable
+	docker tag ${AR_REPO}:${VERSION} ${DOCKERHUB_REPO}:latest-calver
 
 push.self-hosted-release:
-	docker push ${dockerhub_image}:${release_version}
-	docker push ${dockerhub_image}:latest-stable
-	docker push ${dockerhub_image}:latest-calver
+	docker push ${DOCKERHUB_REPO}:${release_version}
+	docker push ${DOCKERHUB_REPO}:latest-stable
+	docker push ${DOCKERHUB_REPO}:latest-calver

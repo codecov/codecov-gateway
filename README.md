@@ -20,10 +20,10 @@ CODECOV_IA_HOST=IA
 CODECOV_IA_PORT=8000
 CODECOV_IA_SCHEME=http
 CODECOV_IA_HOST_HEADER="\$http_host"
-CODECOV_FRONTEND_HOST=frontend
-CODECOV_FRONTEND_PORT=5000
-CODECOV_FRONTEND_SCHEME=http
-CODECOV_FRONTEND_HOST_HEADER="\$http_host"
+CODECOV_DEFAULT_HOST=frontend
+CODECOV_DEFAULT_PORT=5000
+CODECOV_DEFAULT_SCHEME=http
+CODECOV_DEFAULT_HOST_HEADER="\$http_host"
 CODECOV_MINIO_HOST=minio
 CODECOV_MINIO_PORT=9000
 CODECOV_MINIO_SCHEME=http
@@ -44,14 +44,19 @@ CODECOV_IA_HOST=IA
 CODECOV_IA_PORT=8000
 CODECOV_IA_SCHEME=http
 CODECOV_IA_HOST_HEADER="\$http_host"
-CODECOV_FRONTEND_HOST=qa.codecov.dev
-CODECOV_FRONTEND_PORT=443
-CODECOV_FRONTEND_SCHEME=https
-CODECOV_FRONTEND_HOST_HEADER="qa.codecov.dev"
+CODECOV_DEFAULT_HOST=qa.codecov.dev
+CODECOV_DEFAULT_PORT=443
+CODECOV_DEFAULT_SCHEME=https
+CODECOV_DEFAULT_HOST_HEADER="qa.codecov.dev"
 ```
 
 ### SSL
-This is currently untested. It should be in a working state currently.
+1. Mount a valid cert in the container at `/etc/codecov/ssl/certs/cert.crt`
+2. Configure the env `CODECOV_GATEWAY_SSL_ENABLED=true` 
+
+### Proxy
+1. Configure the env `CODECOV_GATEWAY_PROXY_MODE_ENABLED=true`
+All requests will now be sent on to the configured CODECOV_DEFAULT host/port.
 
 ### Minio
 This is mostly intended for when using with docker compose. It makes /export and /archive route to the minio host. To enable minio features use the env var `CODECOV_GATEWAY_MINIO_ENABLED=true`
