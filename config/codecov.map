@@ -16,7 +16,7 @@
 ^/(.*)/(.*)/(.*)/branch/(?P<branch>.+)/(graph|graphs)/badge.svg be_api
 ^/.*/.*/.*/(graph|graphs)/badge.svg be_api
 ^/login/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise|okta|sentry) be_api
-^/logout/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise|okta|sentry) be_api
+^/logout(/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise|okta|sentry)?)? be_api
 ^/.*/.*/.*/pull/(?P<pullid>[^/]+)/(graph|graphs)/(?P<graph>tree|icicle|sunburst|commits).svg be_api
 ^/.*/.*/.*/branch/(?P<branch>[^/].+)/(graph|graphs)/(?P<graph>tree|icicle|sunburst|commits).svg be_api
 ^/.*/.*/.*/(graph|graphs)/(?P<graph>tree|icicle|sunburst|commits).svg be_api
