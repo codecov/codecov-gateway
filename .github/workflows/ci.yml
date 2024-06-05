@@ -10,7 +10,7 @@ on:
 jobs:
   build-self-hosted:
     name: Build Self Hosted Image
-    uses: codecov/gha-workflows/.github/workflows/self-hosted.yml@v1.2.12
+    uses: codecov/gha-workflows/.github/workflows/self-hosted.yml@v1.2.21
     secrets: inherit
     with:
       repo: ${{ vars.CODECOV_GATEWAY_IMAGE || 'codecov/self-hosted-gateway' }}
@@ -21,7 +21,7 @@ jobs:
     needs: [ build-self-hosted ]
     secrets: inherit
     if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main') && github.repository_owner == 'codecov' }}
-    uses: codecov/gha-workflows/.github/workflows/self-hosted.yml@v1.2.12
+    uses: codecov/gha-workflows/.github/workflows/self-hosted.yml@v1.2.21
     with:
       push_rolling: true
       cache_requirements: false
