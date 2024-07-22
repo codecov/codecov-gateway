@@ -21,6 +21,9 @@ refresh:
 build:
 	make build.self-hosted
 
+build.local:
+	docker build . -t codecov/self-hosted-gateway-dev
+
 build.self-hosted:
 	docker build . -t ${AR_REPO}:${VERSION} -t ${AR_REPO}:${release_version}-latest -t ${DOCKERHUB_REPO}:rolling \
 		--label "org.label-schema.build-date"="$(build_date)" \
