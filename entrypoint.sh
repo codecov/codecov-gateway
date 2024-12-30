@@ -92,13 +92,13 @@ _start_haproxy() {
   BACKENDS="-f /etc/haproxy/1-backends.conf"
   envsubst < /etc/haproxy/1-backends.conf.template > /etc/haproxy/1-backends.conf
   MINIO_FILE=""
-  if [ "$CODECOV_GATEWAY_MINIO_ENABLED" ]; then
+  if [ "$CODECOV_GATEWAY_MINIO_ENABLED" ] && [ "$routing_map" != "proxy" ]; then
       echo 'Codecov gateway minio enabled'
       if [ $CODECOV_MINIO_SCHEME = "https" ]; then
           export CODECOV_MINIO_SSL_FLAG=$ssl_string
       fi
       envsubst < /etc/haproxy/1-minio.conf.template > /etc/haproxy/1-minio.conf
-      cat /etc/haproxy/minio.map >> /etc/haproxy/routing.map
+      cat /etc/haproxy/minio.map >> /etc/haproxy/codecov.map
       MINIO_FILE="-f /etc/haproxy/1-minio.conf"
   fi
   echo "Starting haproxy"
