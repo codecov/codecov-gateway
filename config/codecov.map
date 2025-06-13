@@ -1,5 +1,6 @@
 # endpoint                  backend name
 ^/validate(\/)?$  be_api
+^/static(\/.*)?$  be_api
 ^/internal(\/.*)?$  be_api
 ^/graphql(\/.*)?$  be_api
 ^/webhooks(\/.*)?$  be_api
