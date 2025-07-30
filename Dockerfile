@@ -9,13 +9,15 @@ COPY --chown=haproxy:haproxy --chmod=644 config/3-ssl.conf /etc/haproxy/3-ssl.co
 COPY --chown=haproxy:haproxy --chmod=644 config/1-backends.conf /etc/haproxy/1-backends.conf.template
 COPY --chown=haproxy:haproxy --chmod=644 config/1-minio.conf /etc/haproxy/1-minio.conf.template
 COPY --chown=haproxy:haproxy --chmod=644 config/2-http.conf /etc/haproxy/2-http.conf.template
-COPY --chown=haproxy:haproxy --chmod=644 config/codecov.map /etc/haproxy/codecov.map
+COPY --chown=haproxy:haproxy --chmod=644 config/codecov.map /etc/haproxy/codecov.map.template
 COPY --chown=haproxy:haproxy --chmod=644 config/proxy.map /etc/haproxy/proxy.map
 COPY --chown=haproxy:haproxy --chmod=644 config/minio.map /etc/haproxy/minio.map
 ENV CODECOV_API_HOST=api
 ENV CODECOV_API_PORT=8000
 ENV CODECOV_API_SCHEME=http
 ENV CODECOV_API_HOST_HEADER="%[req.hdr(Host)]"
+ENV CODECOV_API_ADMIN_ENABLED=false
+ENV CODECOV_API_ADMIN_PATH=admin
 ENV CODECOV_IA_HOST=api
 ENV CODECOV_IA_PORT=8000
 ENV CODECOV_IA_SCHEME=http

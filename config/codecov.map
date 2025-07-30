@@ -2,6 +2,7 @@
 ^/validate(\/)?$  be_api
 ^/static(\/.*)?$  be_api
 ^/internal(\/.*)?$  be_api
+${API_ADMIN_PATH_PREFIX}^/${CODECOV_API_ADMIN_PATH}(\/.*)?$  be_api
 ^/graphql(\/.*)?$  be_api
 ^/webhooks(\/.*)?$  be_api
 ^/frontend_health$  be_default
