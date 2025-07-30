@@ -91,6 +91,13 @@ _start_haproxy() {
   fi
   BACKENDS="-f /etc/haproxy/1-backends.conf"
   envsubst < /etc/haproxy/1-backends.conf.template > /etc/haproxy/1-backends.conf
+  if [ "$CODECOV_API_ADMIN_ENABLED" = "true" ]; then
+      echo 'Codecov api admin endpoint proxy enabled'
+  else
+      echo 'Codecov api admin endpoint proxy disabled'
+      export API_ADMIN_PATH_PREFIX="# (disabled) "
+  fi
+  envsubst < /etc/haproxy/codecov.map.template > /etc/haproxy/codecov.map
   MINIO_FILE=""
   if [ "$CODECOV_GATEWAY_MINIO_ENABLED" ] && [ "$routing_map" != "proxy" ]; then
       echo 'Codecov gateway minio enabled'
@@ -112,4 +119,3 @@ then
 else
   exec "$@"
 fi
-
