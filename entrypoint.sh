@@ -97,6 +97,13 @@ _start_haproxy() {
       echo 'Codecov api admin endpoint proxy disabled'
       export API_ADMIN_PATH_PREFIX="# (disabled) "
   fi
+  if [ "$CODECOV_API_ADMIN_DEBUG_ENABLED" = "true" ]; then
+      echo 'Codecov api admin debug endpoint proxy enabled'
+      export API_ADMIN_DEBUG_PATH_PREFIX=""
+  else
+      echo 'Codecov api admin debug endpoint proxy disabled'
+      export API_ADMIN_DEBUG_PATH_PREFIX="# (disabled) "
+  fi
   envsubst < /etc/haproxy/codecov.map.template > /etc/haproxy/codecov.map
   MINIO_FILE=""
   if [ "$CODECOV_GATEWAY_MINIO_ENABLED" ] && [ "$routing_map" != "proxy" ]; then
