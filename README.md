@@ -18,6 +18,7 @@ CODECOV_API_SCHEME=http # The scheme on which to access the codecov api. http or
 CODECOV_API_HOST_HEADER="%[req.hdr(Host)]" # The host to send as the host header. Default passes through host. Useful to set for local envs.
 CODECOV_API_ADMIN_ENABLED=false # Enable/disable the admin endpoint proxy
 CODECOV_API_ADMIN_PATH=admin # The path for api's admin interface
+CODECOV_API_ADMIN_DEBUG_ENABLED=false # Enable/disable the admin path for Django's debug toolbar in local development
 CODECOV_IA_HOST=api
 CODECOV_IA_PORT=8000
 CODECOV_IA_SCHEME=http
