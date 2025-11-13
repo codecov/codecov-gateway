@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.17
+# syntax=docker/dockerfile:1.20
 FROM haproxytech/haproxy-alpine:3.3
 RUN apk update --no-cache && apk upgrade --no-cache openssl && apk add --no-cache gettext
 RUN mkdir -p /etc/codecov/ssl/certs && chown haproxy:haproxy /etc/codecov/ssl/certs && chown haproxy:haproxy /etc/haproxy
