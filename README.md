@@ -1,3 +1,4 @@
+<!-- trigger: enforce-license-compliance workflow -->
 # codecov-gateway
 Gateway for self hosted. The brains!
 
