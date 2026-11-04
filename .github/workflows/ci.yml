@@ -6,11 +6,14 @@ on:
       - main
   pull_request:
 
+permissions:
+  contents: read
+  actions: write
 
 jobs:
   build-self-hosted:
     name: Build Self Hosted Image
-    uses: codecov/gha-workflows/.github/workflows/self-hosted.yml@v1.2.38
+    uses: codecov/gha-workflows/.github/workflows/self-hosted.yml@c537f84bec1f241dbd613bbbb44bb5554b43cfe2
     secrets: inherit
     with:
       repo: ${{ vars.CODECOV_GATEWAY_IMAGE || 'codecov/self-hosted-gateway' }}
@@ -21,7 +24,7 @@ jobs:
     needs: [ build-self-hosted ]
     secrets: inherit
     if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main') && github.repository_owner == 'codecov' }}
-    uses: codecov/gha-workflows/.github/workflows/self-hosted.yml@v1.2.38
+    uses: codecov/gha-workflows/.github/workflows/self-hosted.yml@c537f84bec1f241dbd613bbbb44bb5554b43cfe2
     with:
       push_rolling: true
       cache_requirements: false
